@@ -1,0 +1,196 @@
+<div class="container-fluid">
+
+  <div class="mb-3">
+    <fieldset>
+      <legend class="form-label" id="survey-templates-label">Modelos rápidos:</legend>
+      <button *ngFor="let t of surveyTemplates" type="button" class="btn btn-outline-primary me-2 mb-2" (click)="applyTemplate(t)">
+        {{ t.name }}
+      </button>
+    </fieldset>
+  </div>
+
+  <form [formGroup]="newSurveyForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="title" class="form-label">Título</label>
+      <input
+        id="title"
+        class="form-control"
+        formControlName="title"
+        [ngClass]="{
+          'is-invalid':
+            newSurveyForm.get('title')?.invalid &&
+            newSurveyForm.get('title')?.touched
+        }"
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          newSurveyForm.get('title')?.errors &&
+          newSurveyForm.get('title')?.touched
+        "
+      >
+        <span *ngIf="newSurveyForm.get('title')?.errors?.['required']"
+          >O título é obrigatório.</span
+        >
+        <span *ngIf="newSurveyForm.get('title')?.errors?.['maxlength']"
+          >Máximo de 100 caracteres.</span
+        >
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Descrição</label>
+      <textarea
+        id="description"
+        class="form-control"
+        formControlName="description"
+        [ngClass]="{
+          'is-invalid':
+            newSurveyForm.get('description')?.invalid &&
+            newSurveyForm.get('description')?.touched
+        }"
+      ></textarea>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          newSurveyForm.get('description')?.errors &&
+          newSurveyForm.get('description')?.touched
+        "
+      >
+        <span *ngIf="newSurveyForm.get('description')?.errors?.['maxlength']"
+          >Máximo de 500 caracteres.</span
+        >
+      </div>
+    </div>
+  
+    <div formArrayName="questions">
+      <div
+        *ngFor="let q of questions.controls; let i = index"
+        [formGroupName]="i"
+        class="card mb-3"
+      >
+        <div class="card-body">
+          <div class="mb-2">
+            <label [attr.for]="'question-type-' + i">Tipo</label>
+            <select
+              class="form-select"
+              [id]="'question-type-' + i"
+              formControlName="type"
+              [ngClass]="{
+                'is-invalid': q.get('type')?.invalid && q.get('type')?.touched
+              }"
+            >
+              <option value="RATING">Nota</option>
+              <option value="MULTIPLE_CHOICE">Múltipla escolha</option>
+              <option value="YES_NO">Sim/Não</option>
+              <option value="TEXT">Texto</option>
+            </select>
+            <div
+              class="invalid-feedback"
+              *ngIf="q.get('type')?.errors && q.get('type')?.touched"
+            >
+              <span *ngIf="q.get('type')?.errors?.['required']"
+                >O tipo é obrigatório.</span
+              >
+            </div>
+          </div>
+          <div class="mb-2">
+            <label [attr.for]="'question-text-' + i">Pergunta</label>
+            <input
+              class="form-control"
+              [id]="'question-text-' + i"
+              formControlName="text"
+              [ngClass]="{
+                'is-invalid': q.get('text')?.invalid && q.get('text')?.touched
+              }"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="q.get('text')?.errors && q.get('text')?.touched"
+            >
+              <span *ngIf="q.get('text')?.errors?.['required']"
+                >O texto da pergunta é obrigatório.</span
+              >
+              <span *ngIf="q.get('text')?.errors?.['maxlength']"
+                >Máximo de 200 caracteres.</span
+              >
+            </div>
+          </div>
+          <div class="mb-2" *ngIf="q.get('type')?.value === 'MULTIPLE_CHOICE'">
+            <label [attr.for]="'question-options-' + i"
+              >Opções (separadas por vírgula)</label
+            >
+            <input
+              class="form-control"
+              [id]="'question-options-' + i"
+              formControlName="options"
+            />
+          </div>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="required"
+              [id]="'question-required-' + i"
+            />
+            <label class="form-check-label" [attr.for]="'question-required-' + i"
+              >Obrigatória</label
+            >
+          </div>
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            (click)="removeQuestion(i)"
+            *ngIf="questions.length > 1"
+          >
+            Remover
+          </button>
+          <div class="d-flex justify-content-end mb-2 gap-2">
+            <button
+              type="button"
+              class="btn btn-reorder"
+              (click)="moveQuestionUp(i)"
+              [disabled]="i === 0"
+              title="Mover para cima"
+            >
+              ↑
+            </button>
+            <button
+              type="button"
+              class="btn btn-reorder"
+              (click)="moveQuestionDown(i)"
+              [disabled]="i === questions.length - 1"
+              title="Mover para baixo"
+            >
+              ↓
+            </button>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm mt-2"
+        (click)="addQuestion()"
+      >
+        Adicionar Pergunta
+      </button>
+    </div>
+  
+    <div class="d-flex gap-2 mt-3">
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm me-2"
+        ></span>
+        {{ isEditMode ? "Salvar alterações" : "Criar Pesquisa" }}
+      </button>
+      <button
+        *ngIf="isEditMode"
+        type="button"
+        class="btn btn-outline-primary"
+        (click)="onCancelEdit()"
+      >
+        Cancelar alterações
+      </button>
+    </div>
+  </form>
+</div>

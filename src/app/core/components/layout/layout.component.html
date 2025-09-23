@@ -1,0 +1,11 @@
+<button class="btn btn-outline-primary d-md-none m-2" (click)="toggleSidebar()">
+  <i class="bi bi-list"></i>
+</button>
+
+<div class="d-flex h-100">
+  <app-sidebar *ngIf="showSidebar || isDesktop"></app-sidebar>
+  <div class="main-content flex-grow-1 d-flex flex-column">
+    <app-header></app-header>
+      <router-outlet></router-outlet>
+  </div>
+</div>

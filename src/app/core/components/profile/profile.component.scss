@@ -1,0 +1,154 @@
+/* Estilo Dizzme para o componente de Perfil */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+
+:host {
+  font-family: "Poppins", sans-serif;
+  background-color: #fafafa;
+}
+
+.profile-page {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 40px;
+  width: 100%;
+  max-width: 900px;
+  min-width: 320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #fff;
+  border: none;
+  padding: 0 0 24px 0;
+}
+
+.card-header h4 {
+  font-weight: 700;
+  color: #212121;
+  margin-bottom: 0;
+}
+
+.card-header .btn {
+  margin-bottom: 0;
+  margin-left: 24px;
+}
+
+.btn-primary {
+  background-color: #e91e63;
+  border-color: #e91e63;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #d81b60;
+  border-color: #d81b60;
+}
+
+.btn-outline-primary {
+  color: #e91e63;
+  border-color: #e91e63;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 30px;
+}
+
+.btn-outline-primary:hover {
+  background-color: #e91e63;
+  color: #fff;
+}
+
+.form-label.text-muted {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #757575 !important;
+}
+
+p.fs-5 {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+// Estilo para inputs flutuantes
+.form-group-custom {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.form-group-custom .form-control {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  padding: 10px 0;
+  background-color: transparent;
+  transition: border-bottom-color 0.3s ease;
+  outline: none;
+}
+
+.form-group-custom .form-control:focus {
+  border-bottom-color: #e91e63;
+  box-shadow: none;
+}
+
+.form-group-custom label {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.form-group-custom .form-control:focus ~ label,
+.form-group-custom .form-control:not(:placeholder-shown) ~ label {
+  top: -15px;
+  font-size: 12px;
+  color: #e91e63;
+}
+
+input:disabled {
+  background-color: transparent;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1000px) {
+  .card {
+    max-width: 98vw;
+    padding: 24px 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    max-width: 100vw;
+    min-width: unset;
+    padding: 12px 2px;
+  }
+}

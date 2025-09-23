@@ -1,0 +1,94 @@
+<div class="profile-page">
+  <div class="card border-1 shadow-sm">
+    <div class="card-header bg-white border-0 d-flex align-items-center py-3">
+      <h4 class="mb-0">Meu Perfil</h4>
+      <button
+        class="btn btn-outline-primary btn-lg ms-auto"
+        (click)="toggleEditMode()"
+      >
+        <i
+          class="bi"
+          [class.bi-pencil]="!isEditing"
+          [class.bi-x-lg]="isEditing"
+        ></i>
+        {{ isEditing ? "Cancelar" : "Editar Perfil" }}
+      </button>
+    </div>
+
+    <div class="card-body p-4" *ngIf="user">
+      <div *ngIf="!isEditing">
+        <div class="mb-3">
+          <label for="name-view" class="form-label text-muted"
+            >Nome Completo</label
+          >
+          <p id="name-view" class="fs-5">{{ user.name }}</p>
+        </div>
+        <div class="mb-3">
+          <label for="email-view" class="form-label text-muted">E-mail</label>
+          <p id="email-view" class="fs-5">{{ user.email }}</p>
+        </div>
+        <div class="mb-3" *ngIf="user.companyName">
+          <label for="company-view" class="form-label text-muted"
+            >Nome da Empresa</label
+          >
+          <p id="company-view" class="fs-5">{{ user.companyName }}</p>
+        </div>
+      </div>
+
+      <form *ngIf="isEditing" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <div class="form-group-custom">
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            placeholder=" "
+            formControlName="name"
+          />
+          <label for="name">Nome Completo</label>
+        </div>
+        <div class="form-group-custom">
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder=" "
+            formControlName="email"
+          />
+          <label for="email">E-mail (não pode ser alterado)</label>
+        </div>
+        <div class="form-group-custom">
+          <input
+            type="text"
+            id="companyName"
+            class="form-control"
+            placeholder=" "
+            formControlName="companyName"
+          />
+          <label for="companyName">Nome da Empresa (Opcional)</label>
+        </div>
+
+        <div class="alert alert-danger" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isSubmitting || profileForm.invalid"
+          >
+            <span *ngIf="!isSubmitting">Salvar Alterações</span>
+            <span
+              *ngIf="isSubmitting"
+              class="spinner-border spinner-border-sm"
+            ></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="!user" class="card-body text-center p-5">
+      <div class="spinner-border text-primary"></div>
+    </div>
+  </div>
+</div>

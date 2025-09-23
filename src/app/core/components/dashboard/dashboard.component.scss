@@ -1,0 +1,159 @@
+/* Estilo Dizzme para o Dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+:host {
+  font-family: 'Poppins', sans-serif;
+  background-color: #FAFAFA; /* Cor de fundo da paleta */
+}
+
+.container-fluid {
+  max-width: 80vw;
+  margin-top: 24px;
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+  border-bottom: 1px solid #eee;
+}
+
+/* Estilos para os backgrounds dos ícones */
+.bg-primary.bg-opacity-10 {
+  background-color: #E91E63 !important;
+  opacity: 0.1;
+}
+
+.bg-success.bg-opacity-10 {
+  background-color: #4CAF50 !important;
+  opacity: 0.1;
+}
+
+.bg-info.bg-opacity-10 {
+  background-color: #2196F3 !important;
+  opacity: 0.1;
+}
+
+.bg-warning.bg-opacity-10 {
+  background-color: #FFC107 !important;
+  opacity: 0.1;
+}
+
+/* Estilos para as cores dos ícones */
+.text-primary {
+  color: #E91E63 !important; /* Cor primária da paleta */
+}
+
+.text-success {
+  color: #4CAF50 !important; /* Verde para sucesso */
+}
+
+.text-info {
+  color: #2196F3 !important; /* Azul para informação */
+}
+
+.text-warning {
+  color: #FFC107 !important; /* Amarelo para aviso */
+}
+
+.rounded-circle {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background-color: #E91E63; /* Cor primária - Rosa */
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 12px 0;
+  border: none;
+  padding: 12px 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #D81B60; /* Um tom um pouco mais escuro para o hover */
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+  color: #E91E63;
+  border-color: #E91E63;
+}
+
+.btn-outline-primary:hover {
+  background-color: #E91E63;
+  color: #fff;
+}
+
+.btn-outline-success {
+  color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.btn-outline-success:hover {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  color: #212121; /* Cor de texto da paleta */
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.4em 0.8em;
+  border-radius: 50px;
+  background-color: #2196F3 !important;
+  color: #fff !important;
+}
+
+.badge.bg-success {
+  background-color: #4CAF50 !important;
+  color: #fff;
+}
+
+.badge.bg-warning {
+  background-color: #FFC107 !important;
+  color: #212121;
+}
+
+.badge.bg-secondary {
+  background-color: #9E9E9E !important;
+  color: #fff;
+}
+
+.position-relative canvas {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.h3, h1 {
+  color: #212121;
+}
+
+.text-muted {
+  color: #757575 !important;
+}

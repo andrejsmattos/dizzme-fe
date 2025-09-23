@@ -1,0 +1,160 @@
+/* Estilo moderno e minimalista com paleta Dizzme */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+:host {
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FAFAFA; /* Fundo cinza muito claro */
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  background-color: #fff;
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.illustration-section {
+  flex: 1;
+  // background-color: #E91E63; /* Cor primária - Rosa vibrante */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  color: #fff;
+}
+
+.illustration-section img {
+  width: 80%;
+  height: auto;
+  max-width: 300px;
+}
+
+.illustration-section p {
+  text-align: center;
+  margin-top: 20px;
+  max-width: 300px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form-section {
+  flex: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-header {
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.form-header h2 {
+  font-weight: 700;
+  color: #212121; /* Cor secundária - Preto */
+}
+
+.form-group-custom {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.form-group-custom .form-control {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  padding: 10px 0;
+  background-color: transparent;
+  transition: border-bottom-color 0.3s ease;
+  outline: none;
+  width: 70%; 
+}
+
+.form-group-custom .form-control:focus {
+  border-bottom-color: #E91E63; /* Foco com cor primária */
+  box-shadow: none;
+}
+
+.form-group-custom label {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.3s ease;
+
+}
+
+.form-group-custom .form-control:focus ~ label,
+.form-group-custom .form-control:not(:placeholder-shown) ~ label {
+  top: -15px;
+  font-size: 12px;
+  color: #E91E63; /* Rótulo em rosa */
+}
+
+.btn-login {
+  background-color: #E91E63; /* Cor primária - Rosa */
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 12px 0;
+  border: none;
+  padding: 12px 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: #D81B60; /* Um tom um pouco mais escuro para o hover */
+  transform: translateY(-2px);
+}
+
+.text-link {
+  color: #E91E63; /* Cor primária - Rosa */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.text-link:hover {
+  color: #D81B60; /* Tom de hover */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .login-card {
+    flex-direction: column;
+  }
+  .illustration-section {
+    padding: 30px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .form-section {
+    padding: 30px;
+  }
+}
+
+.invalid-feedback {
+  color: #ff5252; /* Um vermelho mais vivo para erros */
+  font-size: 0.875em;
+  margin-top: 5px;
+}
+
+.text-muted {
+  color: #757575 !important; /* Um cinza mais escuro para o texto sutil */
+}

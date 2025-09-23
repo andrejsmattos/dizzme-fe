@@ -1,0 +1,65 @@
+// Variáveis de cor para fácil customização
+:host {
+  --primary-color: #673ab7; // Um roxo como cor principal
+  --text-color: #333;
+  --background-color: #f4f4f9;
+  --light-text-color: #f8f9fa;
+}
+
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // Ocupa a altura total da tela
+  width: 100%;
+  background-color: var(--background-color);
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.not-found-content {
+  max-width: 600px;
+}
+
+.error-code {
+  font-size: 10rem; // 160px
+  font-weight: bold;
+  color: var(--primary-color);
+  margin: 0;
+  // Efeito de sombra para dar profundidade
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-title {
+  font-size: 2.5rem; // 40px
+  color: var(--text-color);
+  margin-top: 0;
+  margin-bottom: 1rem; // 16px
+}
+
+.error-message {
+  font-size: 1.125rem; // 18px
+  color: #6c757d;
+  margin-bottom: 2rem; // 32px
+}
+
+.home-button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem; // 16px
+  font-weight: bold;
+  color: var(--light-text-color);
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 50px; // Bordas arredondadas para um visual moderno
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: darken(#673ab7, 10%); // Escurece a cor no hover
+    transform: translateY(-2px); // Leve elevação no hover
+  }
+}

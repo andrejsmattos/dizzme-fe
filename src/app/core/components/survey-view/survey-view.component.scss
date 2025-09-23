@@ -1,0 +1,60 @@
+/* Estilos Dizzme para Survey View */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+:host {
+  font-family: 'Poppins', sans-serif;
+  background-color: #FAFAFA; /* Cor de fundo da paleta */
+}
+
+.container-fluid {
+  max-width: 80vw;
+  margin-top: 24px;
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.h3, h1 {
+  color: #212121;
+}
+
+.text-muted {
+  color: #757575 !important;
+}
+
+.spinner-border {
+  color: #E91E63 !important; /* Cor primária da paleta */
+}
+
+/* Novas regras para o dropdown */
+.dropdown-menu {
+  list-style: none;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+  color: #E91E63;
+}
+
+/* Estilo específico para o item 'Excluir' */
+.dropdown-item.text-danger:hover {
+  background-color: #ffebee;
+  color: #d32f2f !important;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}

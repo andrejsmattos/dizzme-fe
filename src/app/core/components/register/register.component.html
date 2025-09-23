@@ -1,0 +1,73 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="illustration-section d-none d-md-flex">
+      <img src="assets/dizzme.png" alt="Dizzme CX Logo" class="img-fluid">
+    </div>
+
+    <div class="form-section">
+      <div class="text-align-left mb-4">
+        <h2 class="fw-bold">Crie sua conta</h2>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group-custom">
+          <input type="text" class="form-control" id="name"
+                 formControlName="name"
+                 placeholder=" "
+                 [class.is-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          <label for="name">Nome completo</label>
+          <div class="invalid-feedback" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+            Nome é obrigatório.
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <input type="email" class="form-control" id="email"
+                 formControlName="email"
+                 placeholder=" "
+                 [class.is-invalid]="(registerForm.get('email')?.invalid && registerForm.get('email')?.touched) || errorMessage">
+          <label for="email">Email</label>
+          <div class="invalid-feedback" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            Por favor, insira um email válido.
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <input type="password" class="form-control" id="password"
+                 formControlName="password"
+                 placeholder=" "
+                 [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          <label for="password">Senha</label>
+          <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            Senha deve ter pelo menos 6 caracteres.
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <input type="password" class="form-control" id="confirmPassword"
+                 formControlName="confirmPassword"
+                 placeholder=" "
+                 [class.is-invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+          <label for="confirmPassword">Confirmar senha</label>
+          <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+            As senhas não coincidem.
+          </div>
+        </div>
+
+        <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3" [disabled]="registerForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+          Criar conta
+        </button>
+      </form>
+
+      <div class="text-center">
+        <p class="mb-0">
+          Já tem uma conta?
+          <a routerLink="/login" class="text-link">Faça login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

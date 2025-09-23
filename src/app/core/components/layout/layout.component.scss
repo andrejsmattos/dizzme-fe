@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  height: auto;
+  font-family: "Poppins", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: auto !important;
+}
+
+.main-content {
+  margin-left: 250px;
+  transition: margin-left 0.3s;
+  min-height: 100vh;
+  height: auto;
+}
+
+main.flex-grow-1 {
+  height: auto;
+  min-height: 100vh;
+  overflow: visible !important;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+  app-sidebar {
+    display: none;
+  }
+  /* O botão hamburguer já está visível por d-md-none */
+}
