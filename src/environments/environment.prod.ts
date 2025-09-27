@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.dizzme.com/api',
-  frontendUrl: 'https://app.dizzme.com',
+  apiUrl: 'https://dizzme-be.onrender.com', 
+  frontendUrl: 'https://dizzme-fe.onrender.com',
   jwtTokenKey: 'dizzme-token',
   appName: 'Dizzme'
 };
