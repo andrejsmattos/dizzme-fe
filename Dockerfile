@@ -19,7 +19,7 @@ RUN ls -la dist/dizzme-frontend
 FROM nginx:alpine
 
 # Copiar arquivos do build
-COPY --from=build /app/dist/dizzme-frontend /usr/share/nginx/html
+COPY --from=build /app/dist/dizzme-frontend/browser /usr/share/nginx/html
 
 # Copiar configuração do nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
