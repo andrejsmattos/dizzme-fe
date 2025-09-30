@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { AuthResponse } from '../../models/auth.model';
+import { User } from '../../models/auth.model';
 
 @Component({
   selector: 'app-header',
@@ -12,17 +12,12 @@ import { AuthResponse } from '../../models/auth.model';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  currentUser: AuthResponse | null = null;
-
+  currentUser: User | null = null;
   constructor(private readonly authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
-      if (user && 'token' in user && 'type' in user) {
-        this.currentUser = user as AuthResponse;
-      } else {
-        this.currentUser = null;
-      }
+      this.currentUser = user; 
     });
   }
 
