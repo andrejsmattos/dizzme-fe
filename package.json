@@ -2,7 +2,6 @@
   "name": "dizzme-frontend",
   "version": "0.0.0",
   "scripts": {
-    "prebuild": "ts-node set-env.ts",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

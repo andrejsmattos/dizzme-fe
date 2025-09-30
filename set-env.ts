@@ -2,7 +2,8 @@
 const fs = require('fs');
 
 const targetPath = './src/environments/environment.prod.ts';
-const apiUrl = process.env['API_URL'] || 'http://localhost:8080/api';
+
+const apiUrl = process.env['API_URL'] || 'https://dizzme-be.onrender.com/api'; 
 
 const envConfigFile = `
 export const environment = {
