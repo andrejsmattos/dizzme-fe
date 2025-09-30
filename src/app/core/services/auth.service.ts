@@ -45,6 +45,7 @@ export class AuthService {
       tap(response => {
         if (response.success && response.data) {
           this.storeAuthData(response.data);
+          this.router.navigate(['/dashboard']); 
         }
       })
     );
@@ -55,6 +56,7 @@ export class AuthService {
       tap(response => {
         if (response.success && response.data) {
           this.storeAuthData(response.data);
+          this.router.navigate(['/dashboard']); 
         }
       })
     );
@@ -70,10 +72,10 @@ export class AuthService {
     localStorage.setItem(this.tokenKey, authResponse.token);
 
     const user: User = {
-      id: authResponse.id,
-      name: authResponse.name,
-      email: authResponse.email,
-      role: authResponse.role
+      id: authResponse.user.id,
+      name: authResponse.user.name,
+      email: authResponse.user.email,
+      role: authResponse.user.role
     };
     this.currentUserSubject.next(user);
   }
@@ -90,6 +92,7 @@ export class AuthService {
         }
 
         const user: User = {
+          // O token JWT geralmente tem 'sub' para o ID do usuário (subject)
           id: payload.sub, 
           name: payload.name,
           email: payload.email,
@@ -129,6 +132,4 @@ export class AuthService {
       })
     );
   }
-
-
 }
