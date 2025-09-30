@@ -1,56 +1,130 @@
-import { Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth.guard';
-import { GuestGuard } from './core/guards/guest.guard';
-import { AdminGuard } from './core/guards/admin.guard';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from '../environments/environment';
+import { ApiResponse } from '../app/core/models/api-response.model';
+import { User, LoginRequest, AuthResponse, RegisterRequest } from '../app/core/models/auth.model';
 
-export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
-  },
-  // ADICIONANDO REDIRECT PARA /login (compatibilidade)
-  {
-    path: 'login',
-    redirectTo: '/auth/login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'register',
-    redirectTo: '/auth/register',
-    pathMatch: 'full'
-  },
-  {
-    path: 'auth',
-    // canActivate: [GuestGuard],
-    loadChildren: () => import('./features/auth/auth.routes').then(m => m.authRoutes)
-  },
-  {
-    path: 'dashboard',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.dashboardRoutes)
-  },
-  {
-    path: 'surveys',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./features/surveys/surveys.routes').then(m => m.surveysRoutes)
-  },
-  {
-    path: 'survey/:publicId',
-    loadChildren: () => import('./features/public-survey/public-survey.routes').then(m => m.publicSurveyRoutes)
-  },
-  {
-    path: 'admin',
-    canActivate: [AuthGuard, AdminGuard],
-    loadChildren: () => import('./features/admin/admin.routes').then(m => m.adminRoutes)
-  },
- {
-    path: 'profile',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./features/profile/profile.routes').then(m => m.profileRoutes)
-  },
-  {
-    path: '**',
-    loadComponent: () => import('./shared/components/not-found/not-found.component').then(m => m.NotFoundComponent)
+@Injectable({
+  providedIn: 'root'
+} )
+export class AuthService {
+  private readonly apiUrl = environment.apiUrl;
+  
+  private readonly tokenKey = environment.jwtTokenKey; 
+  
+  private readonly currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
+  private readonly http = inject(HttpClient );
+  private readonly router = inject(Router);
+
+  constructor() {
+    this.loadUserFromStorage();
   }
-];
+
+  public get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
+  }
+
+  public isAuthenticated(): boolean {
+    const token = this.getToken();
+    if (!token) {
+      return false;
+    }
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000 > Date.now();
+    } catch {
+      return false;
+    }
+  }
+
+  public login(credentials: LoginRequest): Observable<ApiResponse<AuthResponse>> {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/login`, credentials ).pipe(
+      tap(response => {
+        if (response.success && response.data) {
+          this.storeAuthData(response.data); 
+          this.router.navigate(['/dashboard']); 
+        }
+      })
+    );
+  }
+
+  public register(userData: RegisterRequest): Observable<ApiResponse<AuthResponse>> {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/auth/register`, userData ).pipe(
+      tap(response => {
+        if (response.success && response.data) {
+          this.storeAuthData(response.data);
+          this.router.navigate(['/dashboard']); 
+        }
+      })
+    );
+  }
+
+  public logout(): void {
+    localStorage.removeItem(this.tokenKey);
+    this.currentUserSubject.next(null);
+    this.router.navigate(['/auth/login']); 
+  }
+
+  private storeAuthData(authResponse: AuthResponse): void {
+    localStorage.setItem(this.tokenKey, authResponse.token); 
+    const user: User = {
+      id: authResponse.user.id,
+      name: authResponse.user.name,
+      email: authResponse.user.email,
+      role: authResponse.user.role
+    };
+    this.currentUserSubject.next(user);
+  }
+
+  private loadUserFromStorage(): void {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isExpired = payload.exp * 1000 < Date.now();
+        if (isExpired) {
+          this.logout();
+          return;
+        }
+
+        const user: User = {
+          id: payload.sub,
+          name: payload.name,
+          email: payload.email,
+          role: payload.role
+        };
+        this.currentUserSubject.next(user);
+      } catch (error) {
+        console.error('Falha ao decodificar o token, realizando logout.', error);
+        this.logout();
+      }
+    }
+  }
+
+  public getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  public hasRole(role: string): boolean {
+    return this.currentUserValue?.role === role;
+  }
+
+  public isAdmin(): boolean {
+    return this.hasRole('ADMIN');
+  }
+
+ public updateUserProfile(userData: Partial<User>): Observable<ApiResponse<User>> {
+    return this.http.put<ApiResponse<User>>(`${this.apiUrl}/users/profile`, userData ).pipe(
+      tap(response => {
+        if (response.success && response.data) {
+          const updatedUser = response.data;
+          this.currentUserSubject.next(updatedUser);
+        }
+      })
+    );
+  }
+}
