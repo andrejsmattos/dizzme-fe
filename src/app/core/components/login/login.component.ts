@@ -39,20 +39,37 @@ export class LoginComponent implements OnInit {
       this.isLoading = true;
       this.errorMessage = '';
 
-      this.authService.login(this.loginForm.value).subscribe({
+     this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           if (response.success) {
+            const data = response.data; // 👈 pega o objeto real que vem do backend
+
+            // Monta o AuthResponse do frontend
+            const authResponse = {
+              token: data.token,
+              type: data.type,
+              user: {
+                id: data.user.id,
+                name: data.user.name,
+                email: data.user.email,
+                role: data.user.role
+              }
+            };
+
+            // Salva no localStorage
+            localStorage.setItem('auth', JSON.stringify(authResponse));
+
             this.router.navigate(['/dashboard']);
           }
-        },
-        error: (error) => {
-          this.errorMessage = error.error?.message || 'Erro ao fazer login';
-          this.isLoading = false;
-        },
-        complete: () => {
-          this.isLoading = false;
-        },
-      });
+          },
+          error: (error) => {
+            this.errorMessage = error.error?.message || 'Erro ao fazer login';
+            this.isLoading = false;
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        });
     }
   }
 }
