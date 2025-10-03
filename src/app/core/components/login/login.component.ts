@@ -49,10 +49,10 @@ export class LoginComponent implements OnInit {
               token: data.token,
               type: data.type,
               user: {
-                id: data.user.id,
-                name: data.user.name,
-                email: data.user.email,
-                role: data.user.role
+                id: data.id,
+                name: data.name,
+                email: data.email,
+                role: data.role
               }
             };
 

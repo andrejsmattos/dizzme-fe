@@ -72,10 +72,10 @@ export class AuthService {
     localStorage.setItem(this.tokenKey, authResponse.token);
 
     const user: User = {
-      id: authResponse.user.id,
-      name: authResponse.user.name,
-      email: authResponse.user.email,
-      role: authResponse.user.role
+      id: authResponse.id,
+      name: authResponse.name,
+      email: authResponse.email,
+      role: authResponse.role
     };
     this.currentUserSubject.next(user);
   }
