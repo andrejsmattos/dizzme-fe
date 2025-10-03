@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes } from '@angular/router'; 
 import { AuthGuard } from './core/guards/auth.guard';
 import { GuestGuard } from './core/guards/guest.guard';
 import { AdminGuard } from './core/guards/admin.guard';
@@ -6,17 +6,7 @@ import { AdminGuard } from './core/guards/admin.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: 'login',
     redirectTo: '/auth/login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'register',
-    redirectTo: '/auth/register',
     pathMatch: 'full'
   },
   {
@@ -43,7 +33,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard, AdminGuard],
     loadChildren: () => import('./features/admin/admin.routes').then(m => m.adminRoutes)
   },
- {
+  {
     path: 'profile',
     canActivate: [AuthGuard],
     loadChildren: () => import('./features/profile/profile.routes').then(m => m.profileRoutes)
