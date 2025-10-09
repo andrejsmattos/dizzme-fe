@@ -10,7 +10,7 @@ import { Injectable } from "@angular/core";
 export class ClientService {
   private readonly API_URL = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getCurrentClient(): Observable<ApiResponse<any>> {
     return this.http.get<ApiResponse<any>>(`${this.API_URL}/clients/me`);
