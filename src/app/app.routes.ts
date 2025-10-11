@@ -10,6 +10,11 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+  path: 'register',
+  redirectTo: '/auth/register',
+  pathMatch: 'full'
+  },
+  {
     path: 'auth',
     canActivate: [GuestGuard],
     loadChildren: () => import('./features/auth/auth.routes').then(m => m.authRoutes)
