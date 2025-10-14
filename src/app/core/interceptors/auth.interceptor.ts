@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -14,28 +20,39 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
-    
-    // Add token to request if available
-    if (token) {
-      req = req.clone({
+
+    // 🔒 Define rotas públicas — não recebem Authorization
+    const isPublicRequest =
+      req.url.includes('/auth/') ||
+      req.url.includes('/qr/') ||
+      req.url.includes('/surveys/public/') ||
+      req.url.includes('/responses/submit') ||
+      req.url.includes('/health');
+
+    let clonedRequest = req;
+
+    // ✅ Só adiciona o token se não for rota pública
+    if (token && !isPublicRequest) {
+      clonedRequest = clonedRequest.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
     }
 
-    // Add Content-Type for POST/PUT/PATCH requests
-    if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
-      req = req.clone({
+    // ✅ Garante Content-Type para POST/PUT/PATCH
+    if (['POST', 'PUT', 'PATCH'].includes(clonedRequest.method)) {
+      clonedRequest = clonedRequest.clone({
         setHeaders: {
           'Content-Type': 'application/json'
         }
       });
     }
 
-    return next.handle(req).pipe(
+    // ✅ Trata erros 401 sem deslogar em rotas públicas
+    return next.handle(clonedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        if (error.status === 401 && !isPublicRequest) {
           this.authService.logout();
           this.router.navigate(['/auth/login']);
         }
