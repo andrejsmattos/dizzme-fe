@@ -31,7 +31,6 @@ export const routes: Routes = [
   },
   {
     path: 'survey/:publicId',
-    canActivate: [],
     loadChildren: () => import('./features/public-survey/public-survey.routes').then(m => m.publicSurveyRoutes)
   },
   {

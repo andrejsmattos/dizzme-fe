@@ -21,38 +21,29 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
 
-    // 🔒 Define rotas públicas — não recebem Authorization
-    const isPublicRequest =
-      req.url.includes('/auth/') ||
-      req.url.includes('/qr/') ||
-      req.url.includes('/surveys/public/') ||
-      req.url.includes('/responses/submit') ||
-      req.url.includes('/health');
+    // 🔓 rotas públicas — não enviam token
+    const isPublic =
+      req.url.includes('/api/surveys/public') ||
+      req.url.includes('/api/qr') ||
+      req.url.includes('/api/responses/submit') ||
+      req.url.includes('/survey/');
 
-    let clonedRequest = req;
-
-    // ✅ Só adiciona o token se não for rota pública
-    if (token && !isPublicRequest) {
-      clonedRequest = clonedRequest.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
+    if (!isPublic && token) {
+      req = req.clone({
+        setHeaders: { Authorization: `Bearer ${token}` }
       });
     }
 
-    // ✅ Garante Content-Type para POST/PUT/PATCH
-    if (['POST', 'PUT', 'PATCH'].includes(clonedRequest.method)) {
-      clonedRequest = clonedRequest.clone({
-        setHeaders: {
-          'Content-Type': 'application/json'
-        }
+    // Define Content-Type em métodos com body
+    if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
+      req = req.clone({
+        setHeaders: { 'Content-Type': 'application/json' }
       });
     }
 
-    // ✅ Trata erros 401 sem deslogar em rotas públicas
-    return next.handle(clonedRequest).pipe(
+    return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 && !isPublicRequest) {
+        if (error.status === 401 && !isPublic) {
           this.authService.logout();
           this.router.navigate(['/auth/login']);
         }
